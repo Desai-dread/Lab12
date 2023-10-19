@@ -1,26 +1,59 @@
+// src/App.vue
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <CommentSwitch />
+    <CommentForm @comment-added="addComment" />
+    <CommentItem v-for="comment in comments" :key="comment.id" :comment="comment" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CommentItem from './components/CommentItem.vue';
+import CommentForm from './components/CommentForm.vue';
+import CommentSwitch from './components/CommentSwitch.vue';
 
 export default {
-  name: 'App',
+  data() {
+    return {
+      comments: [
+        {
+          id: 1,
+          name: 'Максон',
+          text: 'куда идти, че делать то',
+          reaction: 1,
+          timestamp: Date.now(),
+          replies: []
+        },
+        {
+          id: 2,
+          name: 'Лёха',
+          text: 'Не согласен',
+          reaction: -1,
+          timestamp: Date.now() - 1000,
+          replies: []
+        }
+      ]
+    };
+  },
+  methods: {
+    addComment(newComment) {
+      // Метод для добавления комментария
+      newComment.id = this.comments.length + 1;
+      newComment.timestamp = Date.now();
+      newComment.replies = [];
+      this.comments.push(newComment);
+    }
+  },
   components: {
-    HelloWorld
+    CommentItem,
+    CommentForm,
+    CommentSwitch
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/* Глобальные стили */
+@import './styles.css'; /* Ругается */
 </style>
